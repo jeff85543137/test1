@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bj.dao.RoleDao">
+	<select id="getAll" parameterType="role" resultType="role">
+		select * from role
+		<where>
+			<if test="id == 1">
+				 role.id !=1
+			</if>
+			<if test="id == 2">
+				role.id =3
+			</if>
+		</where>
+	</select>
+</mapper>

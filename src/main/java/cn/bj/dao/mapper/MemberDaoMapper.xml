@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bj.dao.MemberDao">
+
+	<select id="findAllMember" resultType="member">
+		select * from member
+	</select>
+
+	<select id="getList" parameterType="role_department" resultType="member">
+		select * from member
+		<where>
+		
+			<if test="rid == 2">
+				member.departmentid =#{did} 
+			</if>
+			<if test="rid == 3"	>
+				member.departmentid = null
+			</if>
+		</where>
+	</select>
+	
+	<select id="findLastMemberId" resultType="int">
+		SELECT MAX(mid) from member 
+	</select>
+	<select id="findLastUserId" resultType="int">
+		SELECT MAX(id) from login_user 
+	</select>
+	
+	<insert id="saveMember" parameterType="Member">
+		INSERT into member VALUES(#{mid},#{mname},#{msex},#{mphone},#{mcard},#{mqq},#{mweixin},#{maddress},null,#{departmentid})
+	</insert>
+	<insert id="saveRole_member" parameterType="RoleMember">
+		INSERT into role_member VALUES(#{memberid},#{roleid})
+	</insert>
+	<insert id="saveLogin_user" parameterType="User">
+		INSERT into login_user VALUES(#{id},#{loginname},#{password},null,null)
+	</insert>
+	<insert id="saveLogin_user_Member" parameterType="LoginUserMember">
+		INSERT into login_user_member VALUES(#{loginuserid},#{memberid})
+	</insert>
+	
+	
+	
+	<select id="findHaveClient" parameterType="long" resultType="int">
+		SELECT count(*) from member_clients mc,clients c WHERE mc.clientid=c.cid and mc.memberid =#{value}
+	</select>
+	
+	<select id="queryMemberById" parameterType="long" resultType="int">
+		SELECT id FROM login_user lu, login_user_member lum
+		WHERE lu.id=lum.loginuserid and lum.memberid =#{value}
+	</select>
+	
+	<delete id="deleteLogin_user" parameterType="int" >
+		
+		delete from login_user  WHERE id=#{value}
+	</delete>
+	
+	<delete id="deleteLogin_user_Member" parameterType="long" >
+		delete from login_user_member  WHERE memberid=#{value}
+	</delete>
+	
+	<delete id="deleteMember" parameterType="long" >
+		delete from  member  WHERE mid =#{value}
+	</delete>
+	
+	<delete id="deleteRole_Member" parameterType="long" >
+		delete from  role_member   WHERE memberid =#{value}
+	</delete>
+	
+	<delete id="deleteMember_clients" parameterType="long" >
+		delete from  member_clients   WHERE memberid = #{value}
+	</delete>
+</mapper>

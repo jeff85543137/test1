@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bj.dao.UserDao">
+
+	<select id="login" parameterType="user" resultType="user">
+		select *  from login_user where loginname = #{loginname} and password = #{password}
+	</select>
+	
+	<select id="selectByLoginUserId" parameterType="int" resultType="role">
+		SELECT r.*
+		from	 member m, role r, role_member 
+		WHERE role_member.memberid = m.mid and role_member.roleid = r.id and m.mid=#{value}
+	</select>
+	
+	<select id="findMemberById" parameterType="int" resultType="member">
+		SELECT m.*
+		from login_user lu,login_user_member lum, member m
+		WHERE lu.id = lum.loginuserid and lum.memberid = m.mid and lu.id=#{value}
+	</select>
+</mapper>
